@@ -1,0 +1,24 @@
+{% extends 'news_board/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        Comments
+        <div class="col-lg-3">
+            {% for comment in comments %}
+            <div class="card-footer text-center">
+                <div class="small"><a href="{% url 'approved' comment.id%}">Add comment</a></div>
+            </div>
+            <div class="card-footer text-center">
+                <div class="small"><a href="{% url 'approved' comment.id %}">Delete comment</a></div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

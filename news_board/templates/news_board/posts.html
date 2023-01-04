@@ -1,0 +1,117 @@
+{% extends 'news_board/base.html' %}
+
+{% block css %}
+<link href="" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+
+            <h2 class="my-4">Posts category</h2>
+            <div class="list-group">
+                {% for category in categories %}
+                <a href="{% url 'categories' category.id %}" class="list-group-item">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9">
+
+            <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <img class="d-block img-fluid" src="/static/vendor/img/slides/slide-1.jpg"
+                             alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid" src="/static/vendor/img/slides/slide-2.jpg"
+                             alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block img-fluid" src="/static/vendor/img/slides/slide-3.jpg"
+                             alt="Third slide">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <div class="row">
+
+                {% for post in object_list %}
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#">
+                            <img class="card-img-top"
+                                 src=" {{post.image.url}} "
+                                 alt="">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                {{ post.header }}
+                            </h4>
+                            <p class="card-text">{{ post.content | truncatewords:20 }}</p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="btn btn-outline-success"
+                               href="{% url 'post' post.id %}">
+                                Read more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+{% if is_paginated %}
+            <div class="pagination ">
+    <span class="step-links mx-left">
+            {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+    {% if page_obj.previous_page_number != 1 %}
+...
+<a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+{% endif %}
+{% endif %}
+{{ page_obj.number }}
+
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+{% if paginator.num_pages != page_obj.next_page_number %}
+...
+<a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+{% endif %}
+{% endif %}
+{% endif %}
+
+    </span>
+</div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

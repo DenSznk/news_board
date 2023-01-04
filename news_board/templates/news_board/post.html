@@ -1,0 +1,72 @@
+{% extends 'news_board/base.html' %}
+{% load embed_video_tags %}
+
+{%block content%}
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+
+            <img class="img-fluid rounded " src="{{ news.image.url }}" alt="">
+            <hr>
+            <p class="lead">
+                {% video news.video as my_video %}
+                {% video my_video 'small' %}
+                {% endvideo %}
+            </p>
+            <p class="lead">
+                {{ news.content }}
+            </p>
+            <p class="lead">
+            <p class="text-right">Category: {{ news.category }}</p>
+            </p>
+            <hr>
+            <p class="lead text-right">Author: {{ news.user }}</p>
+            <hr>
+            <p class="text-right">Date: {{ news.added}}</p>
+            <hr>
+        </div>
+
+    </div>
+</div>
+<h2>Leave your comment!</h2>
+<div id="comments_section">
+
+  {% if user.is_authenticated %}
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ comment_form }}
+      <button class="btn btn-info" type="submit">Add comment <i class="fas fa-comments"></i></button>
+    </div>
+  </form>
+  {% else %}
+  <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to add a comment!</a><br>
+  {% endif %}
+
+  {% if comments %}
+  <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize }}</strong>
+  <hr>
+  <ul>
+    {% for comment in comments %}
+    <li>
+     <div>
+        <span>
+          <strong class="text-info">{{ comment.user }} </strong>
+          <small class="text-muted">{{ comment.added }}</small>
+        </span>
+        <p>
+          {{ comment.body}}
+        </p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <strong class="text-secondary">No comments yet...</strong>
+  {% endif %}
+
+</div>
+
+{% endblock %}
