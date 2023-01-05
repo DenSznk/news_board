@@ -1,0 +1,41 @@
+[
+  {
+    "model": "news_board.post",
+    "pk": 16,
+    "fields": {
+      "header": "Tanks",
+      "video": "https://www.youtube.com/watch?v=d9LFx3xI2U8",
+      "content": "Choose YOUR Best Tank for WoW Dragonflight with this Tank Tier List. I have Ranged ALL World of Warcraft Tanks from 0-5 on Tank Gameplay categories for you to pick your Dragonflight TANK",
+      "image": "image/2023/01/05/11111.jpg",
+      "added": "2023-01-05T14:12:39.143Z",
+      "user": 2,
+      "category": 1
+    }
+  },
+  {
+    "model": "news_board.post",
+    "pk": 17,
+    "fields": {
+      "header": "Healers",
+      "video": "https://www.youtube.com/watch?v=egHnxdpQ5V4",
+      "content": "World of Warcraft: Dragonflight is just around the corner.  I've been testing all of the healers on beta, and in this video, I rank them all from best to worst based on their performance in m+. dungeons. Don't forget to like and subscribe so that you're notified of my new videos!",
+      "image": "image/2023/01/05/398011F7-70C8-4B2F-AF23-76ED4560511B_6SQHyAP.png",
+      "added": "2023-01-05T14:14:33.679Z",
+      "user": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "news_board.post",
+    "pk": 18,
+    "fields": {
+      "header": "Top of  vendors",
+      "video": "https://www.youtube.com/watch?v=prGhwYDH2P4",
+      "content": "World of Warcraft has a handful of Secret vendors. Vendors that are either in way out of the way locations who sell exclusive items Or just vendors on rare mob type timers. This video will go over a mixture of both types of vendors, and rank them from least secret to, kind the most secret and hard to find.",
+      "image": "image/2023/01/05/91020E6F-1726-41DB-A719-47EC1102DE7C_gj1Pnko.png",
+      "added": "2023-01-05T14:16:24.486Z",
+      "user": 1,
+      "category": 2
+    }
+  }
+]
