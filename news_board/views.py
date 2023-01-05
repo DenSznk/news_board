@@ -1,12 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import FormMixin, UpdateView
+from django.views.generic.edit import FormMixin, UpdateView, CreateView, DeleteView
 
-from news_board.forms import CommentForm
+from news_board.forms import CommentForm, PostForm
 from news_board.models import Category, Post, Comment
 from users.models import User
 
@@ -65,6 +66,39 @@ class PostDetail(FormMixin, DetailView):
         return self.get(self, request, *args, **kwargs)
 
 
+class AddPost(LoginRequiredMixin, CreateView):
+    model = Post
+    template_name = 'news_board/add_post.html'
+    form_class = PostForm
+    success_url = reverse_lazy('posts')
+    success_message = 'Post added'
+    title = 'Add post'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.user = self.request.user
+        post.save()
+        return super().form_valid(form)
+
+
+class PostDelete(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'news_board/delete_post.html'
+    success_url = reverse_lazy('posts')
+
+
+class PostUpdate(UpdateView):
+    model = Post
+    template_name = 'news_board/update_post.html'
+    success_url = reverse_lazy('posts')
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.user = self.request.user
+        post.save()
+        return super().form_valid(form)
+
+
 class Approved(UpdateView):
     model = Comment
     template_name = 'news_board/approved.html'
@@ -109,6 +143,3 @@ class CommentsListView(ListView):
         queryset = super(CommentsListView, self).get_queryset()
         post_id = self.kwargs.get('post_id')
         return queryset.filter(post_id=post_id) if post_id else queryset
-
-
-

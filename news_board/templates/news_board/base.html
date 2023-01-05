@@ -51,10 +51,9 @@
                             <li>
                                 <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
                             </li>
-                            <li><a class="dropdown-item" href="">Comments</a></li>
-                            {% if user.is_superuser or user.is_staff %}
-                                </li>
-                            {% endif %}ƒ
+                            <li>
+                                <a class="dropdown-item" href="{% url 'add_post' %}">Add Post</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
