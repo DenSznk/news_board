@@ -25,8 +25,3 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('body',)
-
-    def save(self, commit=True):
-        comment = super(CommentForm, self).save(commit=True)
-        record = Comment.objects.create(comment=comment)
-        record.send_email_for_new_comment()
