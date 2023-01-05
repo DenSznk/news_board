@@ -1,0 +1,23 @@
+[
+  {
+    "model": "news_board.category",
+    "pk": 1,
+    "fields": {
+      "name": "Tanks"
+    }
+  },
+  {
+    "model": "news_board.category",
+    "pk": 2,
+    "fields": {
+      "name": "Vendors"
+    }
+  },
+  {
+    "model": "news_board.category",
+    "pk": 3,
+    "fields": {
+      "name": "Healers"
+    }
+  }
+]

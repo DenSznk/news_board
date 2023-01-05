@@ -4,6 +4,7 @@
 {%block content%}
 <br>
 <br>
+<br>
 <div class="container">
     <div class="row">
         <div class="col-lg-8">
@@ -28,7 +29,7 @@
             <p class="text-right">Date: {{ news.added}}</p>
             {% if user == news.user %}
             <a href="{% url 'delete_post' news.pk %}" class="btn btn-danger">Delete</a>
-            <a href="{% url 'delete_post' news.pk %}" class="btn btn-danger">Edit</a>
+            <a href="{% url 'update_post' news.pk %}" class="btn btn-secondary">Edit</a>
             {% endif %}
             <hr>
         </div>
@@ -36,42 +37,40 @@
 
     </div>
 </div>
-<h2>Leave your comment!</h2>
+<h3>Leave your comment!</h3>
 <div id="comments_section">
 
-  {% if user.is_authenticated %}
-  <form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      {{ comment_form }}
-      <button class="btn btn-info" type="submit">Add comment <i class="fas fa-comments"></i></button>
-    </div>
-  </form>
-  {% else %}
-  <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to add a comment!</a><br>
-  {% endif %}
+    {% if user.is_authenticated %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ comment_form }}
+            <button class="btn btn-info" type="submit">Add comment <i class="fas fa-comments"></i></button>
+        </div>
+    </form>
+    {% else %}
+    <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to add a comment!</a><br>
+    {% endif %}
 
-  {% if comments %}
-  <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize }}</strong>
-  <hr>
-  <ul>
-    {% for comment in comments %}
-    <li>
-     <div>
-        <span>
-          <strong class="text-info">{{ comment.user }} </strong>
-          <small class="text-muted">{{ comment.added }}</small>
-        </span>
-        <p>
-          {{ comment.body}}
-        </p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
+    {% if comments %}
+    <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize
+        }}</strong>
+    <hr>
+    <ul>
+        {% for comment in comments %}
+        <div class="comment">
+            <div class="date">{{ comment.added }}</div>
+            <strong>{{ comment.user }}</strong>
+            <br>
+            <p>{{ comment.body|linebreaks }}</p>
+        </div>
+
+
+        {% endfor %}
+    </ul>
+    {% else %}
     <strong class="text-secondary">No comments yet...</strong>
-  {% endif %}
+    {% endif %}
 
 </div>
 

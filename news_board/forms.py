@@ -4,6 +4,12 @@ from news_board.models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
+    video = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control py-4',
+            'placeholder': 'Enter video link',
+        }))
+
     class Meta:
         model = Post
         fields = ('header', 'content', 'image', 'video', 'category')
