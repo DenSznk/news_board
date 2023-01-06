@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
@@ -44,23 +45,18 @@ class PostDetail(DetailView):
     def get_context_data(self, **kwargs):
         data = super(PostDetail, self).get_context_data(**kwargs)
 
-        comments = Comment.objects.filter(
-            post=self.get_object()).order_by('-added')
+        comments = Comment.objects.filter(post=self.get_object()).order_by('-added')
         data['comments'] = comments
         if self.request.user.is_authenticated:
             data['comment_form'] = CommentForm(instance=self.request.user)
-
         return data
 
     def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            new_comment = Comment(body=request.POST.get('body'),
-                                  user=self.request.user,
-                                  post=self.get_object())
-            new_comment.save()
-            return self.get(self, request, *args, **kwargs)
-        else:
-            return reverse_lazy('posts')
+        new_comment = Comment(body=request.POST.get('body'),
+                              user=self.request.user,
+                              post=self.get_object())
+        new_comment.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 class AddPost(LoginRequiredMixin, CreateView):
