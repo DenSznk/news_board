@@ -52,17 +52,15 @@ class PostDetail(DetailView):
 
         return data
 
-
-
-    # def post(self, request, *args, **kwargs):
-    #     if request.method == 'POST':
-    #         new_comment = Comment(body=request.POST.get('body'),
-    #                               user=self.request.user,
-    #                               post=self.get_object())
-    #         new_comment.save()
-    #         return self.get(self, request, *args, **kwargs)
-    #     else:
-    #         return reverse_lazy('posts')
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            new_comment = Comment(body=request.POST.get('body'),
+                                  user=self.request.user,
+                                  post=self.get_object())
+            new_comment.save()
+            return self.get(self, request, *args, **kwargs)
+        else:
+            return reverse_lazy('posts')
 
 
 class AddPost(LoginRequiredMixin, CreateView):
