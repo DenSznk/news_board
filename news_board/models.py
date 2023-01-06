@@ -49,16 +49,3 @@ class Comment(models.Model):
     def __str__(self):
         return f'{self.body} to {self.user}'
 
-    # def send_email_for_new_comment(self):
-    #     print('hello')
-
-        # email = self.post.user.email
-        # subject = f'new comment from {self.user.username}'
-        # message = f'For verification {self.user.email}'
-        # send_mail(
-        #     subject=subject,
-        #     message=message,
-        #     from_email=settings.EMAIL_FROM,
-        #     recipient_list=[email],
-        #     fail_silently=False
-        # )

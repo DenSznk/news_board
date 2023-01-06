@@ -1,13 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
-from django.conf import settings
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import FormMixin, UpdateView, CreateView, DeleteView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
 from news_board.forms import CommentForm, PostForm
 from news_board.models import Category, Post, Comment
-from users.models import User
 
 
 class IndexView(TemplateView):
@@ -42,6 +39,7 @@ class PostDetail(DetailView):
     template_name = 'news_board/post.html'
     context_object_name = 'news'
     form_class = CommentForm
+    success_url = reverse_lazy('posts')
 
     def get_context_data(self, **kwargs):
         data = super(PostDetail, self).get_context_data(**kwargs)
@@ -54,12 +52,17 @@ class PostDetail(DetailView):
 
         return data
 
-    def post(self, request, *args, **kwargs):
-        new_comment = Comment(body=request.POST.get('body'),
-                              user=self.request.user,
-                              post=self.get_object())
-        new_comment.save()
-        return self.get(self, request, *args, **kwargs)
+
+
+    # def post(self, request, *args, **kwargs):
+    #     if request.method == 'POST':
+    #         new_comment = Comment(body=request.POST.get('body'),
+    #                               user=self.request.user,
+    #                               post=self.get_object())
+    #         new_comment.save()
+    #         return self.get(self, request, *args, **kwargs)
+    #     else:
+    #         return reverse_lazy('posts')
 
 
 class AddPost(LoginRequiredMixin, CreateView):
@@ -88,18 +91,3 @@ class PostUpdate(UpdateView):
     form_class = PostForm
     template_name = 'news_board/add_post.html'
     success_url = reverse_lazy('posts')
-
-
-class Cans(UpdateView):
-    model = Comment
-    template_name = 'accept.html'
-    form_class = CommentForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['message'] = 'Вы отменили отклик!'
-        comment_id = self.kwargs.get('pk')
-        Comment.objects.filter(pk=comment_id).delelete()
-        return context
-
-#
