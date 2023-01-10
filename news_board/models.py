@@ -34,6 +34,9 @@ class Post(models.Model):
     def __str__(self):
         return self.header
 
+    def get_absolute_url(self):
+        return reverse('post', args=[str(self.id)])
+
     @property
     def number_of_comments(self):
         return Comment.objects.filter(post=self).count()
@@ -48,4 +51,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.body} to {self.user}'
-

@@ -1,4 +1,5 @@
 from django import forms
+from django.urls import reverse
 
 from news_board.models import Post, Comment
 
@@ -8,7 +9,8 @@ class PostForm(forms.ModelForm):
         widget=forms.TextInput(attrs={
             'class': 'form-control py-4',
             'placeholder': 'Enter video link',
-        }))
+
+        }), required=False)
 
     class Meta:
         model = Post

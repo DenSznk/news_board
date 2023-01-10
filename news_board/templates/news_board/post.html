@@ -45,19 +45,18 @@
         {% csrf_token %}
         <div class="form-group">
             {{ comment_form }}
-             <input type="submit" value="Save">
+            <input type="submit" value="Save">
         </div>
     </form>
     {% else %}
     <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to add a comment!</a><br>
     {% endif %}
 
-    {% if comments %}
-    <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize
-        }}</strong>
+    {% if comments_page %}
+    <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments | pluralize }}</strong>
     <hr>
     <ul>
-        {% for comment in comments %}
+        {% for comment in comments_page %}
         <div class="comment">
             <div class="date">{{ comment.added }}</div>
             <strong>{{ comment.user }}</strong>
@@ -72,6 +71,23 @@
     <strong class="text-secondary">No comments yet...</strong>
     {% endif %}
 
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if comments_page.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ comments_page.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ comments_page.number }} of {{ comments_page.paginator.num_pages }}.
+        </span>
+
+        {% if comments_page.has_next %}
+            <a href="?page={{ comments_page.next_page_number }}">next</a>
+            <a href="?page={{ comments_page.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
 </div>
 
 {% endblock %}
