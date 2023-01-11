@@ -65,16 +65,13 @@ class PostDetail(DetailView):
                               user=self.request.user,
                               post=self.get_object())
         new_comment.save()
-        # вот тут проблема
-
-        user = Post.objects.get(user=args['id'])
+        user = Post.objects.get(id=kwargs['pk']).user
         send_mail(
             subject='title',
             message=f'message',
             from_email=settings.EMAIL_FROM,
-            recipient_list=[user]
+            recipient_list=[user.email]
         )
-
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
