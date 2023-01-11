@@ -61,7 +61,7 @@
 
     <ul>
         {% for comment in comments_page %}
-        {% if comment.is_accept or user == news.user %}
+        {% if comment.is.approved or user == news.user %}
         <div class="comment">
             <div class="date">{{ comment.added }}</div>
             <strong>{{ comment.user }}</strong>
@@ -69,7 +69,7 @@
             <p>{{ comment.body|linebreaks }}</p>
             <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Approved</a></span>
 
-            <span class="pull-right mr-3"><a href="{% url 'comment_disapproved' comment.id %}">Approved</a></span>
+            <span class="pull-right mr-3"><a href="{% url 'comment_disapproved' comment.id %}">Delete</a></span>
         </div>
 
         {% endif %}

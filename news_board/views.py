@@ -65,12 +65,12 @@ class PostDetail(DetailView):
                               user=self.request.user,
                               post=self.get_object())
         new_comment.save()
-        user = Post.objects.get(id=kwargs['pk']).user
+        posts_user = Post.objects.get(id=kwargs['pk']).user
         send_mail(
             subject='title',
             message=f'message',
             from_email=settings.EMAIL_FROM,
-            recipient_list=[user.email]
+            recipient_list=[posts_user.email]
         )
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -126,7 +126,32 @@ class CommentApproved(LoginRequiredMixin, UpdateView):
         return data
 
 
-class CommentDisapproved(LoginRequiredMixin, UpdateView):
+class CommentDisapproved(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'news_board/comment_disapproved.html'
-    form_class = CommentForm
+    success_url = 'profile'
+
+
+# class CommentCategoryView(ListView):
+#     model = Comment
+#     template_name = 'users/profile.html'
+#     paginate_by = 1
+#     ordering = 'added'
+#
+#     def get_queryset(self, **kwargs):
+#         queryset = super(CommentCategoryView, self).get_queryset()
+#
+#         comment_category_id = Post.objects.get(id=kwargs['pk']).post_id
+
+
+    # posts_user = Post.objects.get(id=kwargs['pk']).user
+    # def get_queryset(self):
+    #     queryset = super(PostsListView, self).get_queryset()
+    #     category_id = self.kwargs.get('category_id')
+    #     return queryset.filter(category_id=category_id) if category_id else queryset
+    #
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super(PostsListView, self).get_context_data()
+    #     context['title'] = 'News Board'
+    #     context['categories'] = Category.objects.all()
+    #     return context
