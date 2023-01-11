@@ -54,8 +54,10 @@ class PostDetail(DetailView):
         data['comments_page'] = paginator.get_page(page)
         data['comments'] = comments
         data['title'] = 'News Board Post'
+
         if self.request.user.is_authenticated:
             data['comment_form'] = CommentForm(instance=self.request.user)
+
         return data
 
     def post(self, request, *args, **kwargs):
@@ -63,6 +65,16 @@ class PostDetail(DetailView):
                               user=self.request.user,
                               post=self.get_object())
         new_comment.save()
+        # вот тут проблема
+
+        user = Post.objects.get(user=args['id'])
+        send_mail(
+            subject='title',
+            message=f'message',
+            from_email=settings.EMAIL_FROM,
+            recipient_list=[user]
+        )
+
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
@@ -101,9 +113,10 @@ class CommentApproved(LoginRequiredMixin, UpdateView):
     template_name = 'news_board/comment_approved.html'
     form_class = CommentForm
     context_object_name = 'approved'
+    success_url = reverse_lazy('posts')
 
     def get_context_data(self, **kwargs):
-        data = super(CommentApproved, self).get_context_data(**kwargs)
+        data = super().get_context_data(**kwargs)
         comment_id = self.kwargs.get('pk')
         Comment.objects.filter(pk=comment_id).update(approved=True)
         user = self.object.user
@@ -120,5 +133,3 @@ class CommentDisapproved(LoginRequiredMixin, UpdateView):
     model = Comment
     template_name = 'news_board/comment_disapproved.html'
     form_class = CommentForm
-
-

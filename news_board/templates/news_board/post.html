@@ -3,6 +3,7 @@
 
 {%block content%}
 <br>
+
 <br>
 <br>
 <div class="container">
@@ -38,6 +39,7 @@
     </div>
 </div>
 <h3>Leave your comment!</h3>
+<strong class="text-secondary">Comment will be added after confirmation</strong>
 <div id="comments_section">
 
     {% if user.is_authenticated %}
@@ -54,17 +56,23 @@
 
     {% if comments_page %}
     <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments | pluralize }}</strong>
+
     <hr>
+
     <ul>
         {% for comment in comments_page %}
+        {% if comment.is_accept or user == news.user %}
         <div class="comment">
             <div class="date">{{ comment.added }}</div>
             <strong>{{ comment.user }}</strong>
             <br>
             <p>{{ comment.body|linebreaks }}</p>
+            <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Approved</a></span>
+
+            <span class="pull-right mr-3"><a href="{% url 'comment_disapproved' comment.id %}">Approved</a></span>
         </div>
 
-
+        {% endif %}
         {% endfor %}
     </ul>
     {% else %}
