@@ -1,0 +1,9 @@
+{% extends 'news_board/base.html' %}
+{%block content%}
+<br>
+<br>
+<br>
+<br>
+<h1>{{ message }}</h1>
+<a href="{% url 'profile' user.id %}"> Go to Profile </a>
+{%endblock%}

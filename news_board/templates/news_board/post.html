@@ -76,7 +76,7 @@
             <strong>{{ comment.user }}</strong>
             <p>{{ comment.body|linebreaks }}</p>
         {% if comment.approved == True%}
-        <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Delete</a></span>
+        <span class="pull-right mr-3"><a href="{% url 'comment_disapproved' comment.id %}">Delete</a></span>
         <hr>
         {% else %}
         <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Approved</a></span>

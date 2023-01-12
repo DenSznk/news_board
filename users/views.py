@@ -1,10 +1,13 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import HttpResponseRedirect, render
-from django.urls import reverse
-from django.views.generic import TemplateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, UpdateView
 
 # from news_board.models import Comment
+from news_board.models import Category, Comment, Post
+from news_board.views import PostsListView
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from users.models import EmailVerification, User
 
@@ -44,23 +47,20 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
-@login_required
-def profile(request):
-    """Personal account of a registered user"""
+class UserProfileView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileForm
+    template_name = 'users/profile.html'
 
-    if request.method == 'POST':
-        form = UserProfileForm(instance=request.user, data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('profile'))
-    else:
-        form = UserProfileForm(instance=request.user)
-    context = {
-        'title': 'Store - Profile',
-        'form': form,
-        # 'baskets': Comment.objects.filter(user=request.user)????
-    }
-    return render(request, 'users/profile.html', context)
+    def get_context_data(self, **kwargs):
+        data = super(UserProfileView, self).get_context_data()
+        user_posts = Post.objects.filter(user=self.request.user)
+        comments_to_user_posts = Comment.objects.filter()
+        data['user_posts'] = user_posts
+        return data
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=(self.object.id,))
 
 
 class EmailVerificationView(TemplateView):

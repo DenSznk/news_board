@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'news_board/base.html' %}
 
-</body>
-</html>
+{% block content%}
+<br>
+<br>
+<br>
+<h1>  Post <strong>{{comment.body}}</strong> will be deleted!</h1>
+     <hr>
+
+
+{% include 'news_board/form.html' with button='Delete' %}
+{% endblock %}

@@ -16,10 +16,6 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('header', 'content', 'image', 'video', 'category')
 
-    def clean(self):
-        email = self.cleaned_data['email']
-        return email
-
 
 class CommentForm(forms.ModelForm):
     body = forms.CharField(widget=forms.TextInput(attrs={

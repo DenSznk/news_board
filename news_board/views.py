@@ -68,8 +68,8 @@ class PostDetail(DetailView):
         new_comment.save()
         posts_user = Post.objects.get(id=kwargs['pk']).user
         send_mail(
-            subject='title',
-            message=f'message',
+            subject='New Comment',
+            message=f'You have new comment',
             from_email=settings.EMAIL_FROM,
             recipient_list=[posts_user.email]
         )
@@ -117,6 +117,7 @@ class CommentApproved(LoginRequiredMixin, UpdateView):
         data = super().get_context_data(**kwargs)
         comment_id = self.kwargs.get('pk')
         Comment.objects.filter(pk=comment_id).update(approved=True)
+        data['message'] = 'Comment was approved'
         user = self.object.user
         send_mail(
             subject='Approved comment',
@@ -130,18 +131,4 @@ class CommentApproved(LoginRequiredMixin, UpdateView):
 class CommentDisapproved(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'news_board/comment_disapproved.html'
-    success_url = 'profile'
-
-
-# def user_comments(request, user_id):
-#     user_posts = Post.objects.filter(user_id=user_id)
-#     comments = Comment.objects.filter(post__in=user_posts)
-#     category_id = request.get('category_id')
-#     paginator = Paginator(comments, 10)  # Show 10 comments per page
-#     page = request.GET.get('page')
-#     comments = paginator.get_page(page)
-#
-#     context = {'comments': comments,
-#                'category_id': category_id,
-#                }
-#     return render(request, 'blog/user_comments.html', context)
+    success_url = reverse_lazy('posts')
