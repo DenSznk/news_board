@@ -23,7 +23,6 @@
             </p>
             <p class="lead">
             <p class="text-right">Category: {{ news.category }}</p>
-            </p>
             <hr>
             <p class="lead text-right">Author: {{ news.user }}</p>
             <hr>
@@ -61,20 +60,32 @@
 
     <ul>
         {% for comment in comments_page %}
-        {% if comment.is.approved or user == news.user %}
+        {% if comment.approved == True and user != news.user%}
         <div class="comment">
-            <div class="date">{{ comment.added }}</div>
+            <div class="date">
+                {{ comment.added }}
+            </div>
             <strong>{{ comment.user }}</strong>
-            <br>
             <p>{{ comment.body|linebreaks }}</p>
-            <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Approved</a></span>
+        {% endif%}
+        {% if user == news.user%}
+        <div class="comment">
+            <div class="date">
+                {{ comment.added }}
+            </div>
+            <strong>{{ comment.user }}</strong>
+            <p>{{ comment.body|linebreaks }}</p>
+        {% if comment.approved == True%}
+        <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Delete</a></span>
+        <hr>
+        {% else %}
+        <span class="pull-right mr-3"><a href="{% url 'comment_approved' comment.id %}">Approved</a></span>
+        <hr>
+        {% endif%}
+        {% endif%}
 
-            <span class="pull-right mr-3"><a href="{% url 'comment_disapproved' comment.id %}">Delete</a></span>
-        </div>
-
-        {% endif %}
         {% endfor %}
-    </ul>
+        </div></div></ul>
     {% else %}
     <strong class="text-secondary">No comments yet...</strong>
     {% endif %}

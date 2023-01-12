@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
@@ -132,26 +133,15 @@ class CommentDisapproved(LoginRequiredMixin, DeleteView):
     success_url = 'profile'
 
 
-# class CommentCategoryView(ListView):
-#     model = Comment
-#     template_name = 'users/profile.html'
-#     paginate_by = 1
-#     ordering = 'added'
+# def user_comments(request, user_id):
+#     user_posts = Post.objects.filter(user_id=user_id)
+#     comments = Comment.objects.filter(post__in=user_posts)
+#     category_id = request.get('category_id')
+#     paginator = Paginator(comments, 10)  # Show 10 comments per page
+#     page = request.GET.get('page')
+#     comments = paginator.get_page(page)
 #
-#     def get_queryset(self, **kwargs):
-#         queryset = super(CommentCategoryView, self).get_queryset()
-#
-#         comment_category_id = Post.objects.get(id=kwargs['pk']).post_id
-
-
-    # posts_user = Post.objects.get(id=kwargs['pk']).user
-    # def get_queryset(self):
-    #     queryset = super(PostsListView, self).get_queryset()
-    #     category_id = self.kwargs.get('category_id')
-    #     return queryset.filter(category_id=category_id) if category_id else queryset
-    #
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super(PostsListView, self).get_context_data()
-    #     context['title'] = 'News Board'
-    #     context['categories'] = Category.objects.all()
-    #     return context
+#     context = {'comments': comments,
+#                'category_id': category_id,
+#                }
+#     return render(request, 'blog/user_comments.html', context)
