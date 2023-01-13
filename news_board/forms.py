@@ -1,5 +1,4 @@
 from django import forms
-from django.urls import reverse
 
 from news_board.models import Post, Comment
 

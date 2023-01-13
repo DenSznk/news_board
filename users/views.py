@@ -4,8 +4,7 @@ from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, UpdateView
 
-from news_board.models import Category, Post, Comment
-from news_board.views import PostsListView
+from news_board.models import Post
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from users.models import EmailVerification, User
 

@@ -22,6 +22,7 @@ class IndexView(TemplateView):
 
 
 class PostsListView(ListView):
+    """list of posts sorted by category"""
     model = Post
     template_name = 'news_board/posts.html'
     paginate_by = 3
@@ -149,6 +150,3 @@ class CommentsFilterView(LoginRequiredMixin, ListView):
         data['post_comments'] = Post.objects.filter(user=self.request.user)
 
         return data
-
-
-
