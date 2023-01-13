@@ -1,12 +1,10 @@
 from django.contrib import auth, messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, UpdateView
 
-# from news_board.models import Comment
-from news_board.models import Category, Comment, Post
+from news_board.models import Category, Post, Comment
 from news_board.views import PostsListView
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from users.models import EmailVerification, User
@@ -55,7 +53,6 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         data = super(UserProfileView, self).get_context_data()
         user_posts = Post.objects.filter(user=self.request.user)
-        comments_to_user_posts = Comment.objects.filter()
         data['user_posts'] = user_posts
         return data
 

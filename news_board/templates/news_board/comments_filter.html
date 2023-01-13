@@ -1,0 +1,65 @@
+{% extends 'news_board/base.html' %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <div class="row">
+
+        <div class="col-lg-3">
+
+            <h2 class="my-4">All your posts</h2>
+            <div class="list-group">
+                {% for post_comment in post_comments %}
+                <a href="{% url 'comment_post' post_comment.id %}" class="list-group-item">
+                    {{ post_comment.header }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h2 class="my-4">Comments </h2>
+        </div>
+    </div>
+</div>
+</div>
+
+<br>
+<div class="container">
+
+    {% for com in page_obj%}
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+                <div class="list-group">
+                    <div class="card">
+
+                        <div class="card-header">
+                            {{com.user}}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{com.added}}</h5>
+                            <p class="card-text">{{ com.body}}</p>
+                            {%if com.approved == True%}
+                            <a href="{% url 'comment_disapproved' com.id %}">Delete</a>
+                            {% else %}
+                            <a href="{% url 'comment_approved' com.id %}">Approved</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endfor %}
+{% endblock %}

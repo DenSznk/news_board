@@ -2,10 +2,12 @@ from django.urls import path
 
 from news_board.views import (PostsListView, PostDetail,
                               AddPost, PostDelete, PostUpdate, CommentApproved,
-                              CommentDisapproved)
+                              CommentDisapproved, CommentsFilterView)
 
 urlpatterns = [
     path('', PostsListView.as_view(), name='posts'),
+    path('comments', CommentsFilterView.as_view(), name='comments_filter'),
+    path('comments/<int:post_id>/', CommentsFilterView.as_view(), name='comment_post'),
     path('<int:category_id>/', PostsListView.as_view(), name='categories'),
     path('add-post/', AddPost.as_view(), name='add_post'),
     path('delete-post/<int:pk>/', PostDelete.as_view(), name='delete_post'),

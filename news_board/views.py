@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
@@ -132,3 +131,24 @@ class CommentDisapproved(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'news_board/comment_disapproved.html'
     success_url = reverse_lazy('posts')
+
+
+class CommentsFilterView(LoginRequiredMixin, ListView):
+    model = Comment
+    template_name = 'news_board/comments_filter.html'
+    paginate_by = 10
+    ordering = 'id'
+
+    def get_queryset(self):
+        queryset = super(CommentsFilterView, self).get_queryset()
+        post_id = self.kwargs.get('post_id')
+        return queryset.filter(post_id=post_id) if post_id else queryset.filter(user=self.request.user)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super(CommentsFilterView, self).get_context_data()
+        data['post_comments'] = Post.objects.filter(user=self.request.user)
+
+        return data
+
+
+
